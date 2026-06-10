@@ -2837,6 +2837,7 @@ type ContextPanelInfo struct {
 	WindowTokens     int               `json:"windowTokens"`
 	PromptTokens     int               `json:"promptTokens"`
 	CompletionTokens int               `json:"completionTokens"`
+	TotalTokens      int               `json:"totalTokens"`
 	ReasoningTokens  int               `json:"reasoningTokens"`
 	CacheHitTokens   int               `json:"cacheHitTokens"`
 	CacheMissTokens  int               `json:"cacheMissTokens"`
@@ -2888,6 +2889,7 @@ func (a *App) ContextPanel(tabID string) ContextPanelInfo {
 	usage := telemetry.Usage
 	info.PromptTokens = usage.PromptTokens
 	info.CompletionTokens = usage.CompletionTokens
+	info.TotalTokens = usage.TotalTokens
 	info.ReasoningTokens = usage.ReasoningTokens
 	info.CacheHitTokens = usage.CacheHitTokens
 	info.CacheMissTokens = usage.CacheMissTokens

@@ -38,7 +38,7 @@ func TestWorkspaceTabAggregatesSessionUsageTelemetry(t *testing.T) {
 	tab.recordTurnDone(start + 1500)
 
 	got := tab.telemetrySnapshot().Usage
-	if got.RequestCount != 1 || got.PromptTokens != 100 || got.CompletionTokens != 40 || got.ReasoningTokens != 10 {
+	if got.RequestCount != 1 || got.PromptTokens != 100 || got.CompletionTokens != 40 || got.TotalTokens != 140 || got.ReasoningTokens != 10 {
 		t.Fatalf("usage tokens = %+v", got)
 	}
 	if got.CacheHitTokens != 70 || got.CacheMissTokens != 30 {
@@ -49,5 +49,10 @@ func TestWorkspaceTabAggregatesSessionUsageTelemetry(t *testing.T) {
 	}
 	if got.SessionCost <= 0 || got.SessionCurrency != "¥" {
 		t.Fatalf("cost = %f %q, want positive ¥", got.SessionCost, got.SessionCurrency)
+	}
+
+	app := &App{tabs: map[string]*WorkspaceTab{"tab": tab}}
+	if panel := app.ContextPanel("tab"); panel.TotalTokens != 140 {
+		t.Fatalf("context panel total tokens = %d, want 140", panel.TotalTokens)
 	}
 }
